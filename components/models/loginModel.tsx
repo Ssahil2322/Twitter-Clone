@@ -1,6 +1,7 @@
 import useLoginModel from "@/hooks/useLoginModel";
 import { useCallback, useState } from "react";
 import Input from "../input";
+import {signIn} from "next-auth/react";
 import Model from "../model";
 import useRegisterModel from "@/hooks/useRegisterModel";
 const LoginModel=()=>{
@@ -21,6 +22,11 @@ const LoginModel=()=>{
   const onSubmit=useCallback(async() => {
     try{
         setIsLoading(true);
+        await signIn('credentials',{
+          email,
+          password
+        })
+
 
         loginModel.onClose();
     }catch(err){
@@ -28,7 +34,7 @@ const LoginModel=()=>{
     }finally{
         setIsLoading(false);
     }
-  },[loginModel]  )
+  },[loginModel,email,password]  )
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
